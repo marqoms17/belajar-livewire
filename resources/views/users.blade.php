@@ -15,8 +15,12 @@
 </head>
 
 <body>
-    {{-- @livewire('users') --}}
-    <livewire:users />
+    <div class="flex justify-center gap-10">
+        <livewire:user-register-form />
+        {{-- menambahkan lazy loading --}}
+        {{-- @livewire('users-list', ['lazy' => true]) --}}
+        <livewire:users-list lazy />
+    </div>
 </body>
 
 </html>

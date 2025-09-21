@@ -4,19 +4,13 @@ namespace App\Livewire;
 
 use App\Models\User;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Livewire\WithFileUploads;
-use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Hash;
 
-#[Title('Users Page')]
-
-class Users extends Component
+class UserRegisterForm extends Component
 {
-    use WithFileUploads, WithPagination;
-
-    public $query = '';
+    use WithFileUploads;
 
     #[Validate('required|min:3')]
     public $name = '';
@@ -29,17 +23,6 @@ class Users extends Component
 
     #[Validate('image|max:2000')]
     public $avatar;
-
-    public function updatedQuery()
-    {
-        $this->resetPage(); //reset dan mencari diseluruh halaman pencarian
-
-    }
-
-    public function search()
-    {
-        $this->resetPage(); //reset dan mencari diseluruh halaman pencarian
-    }
 
     public function createNewUser()
     {
@@ -60,14 +43,14 @@ class Users extends Component
         $this->reset(); //untuk menghapus inputan di form setelah disubmit
 
         session()->flash('success', 'User succesfully created.');
+
+        $this->dispatch('user-created'); //event untuk koneksi antar komponen
     }
 
-    public function render()
-    {
-        return view('livewire.users', [
-            'users' => User::latest()
-                ->where('name', 'like', "%{$this->query}%")
-                ->paginate(6)
-        ]);
-    }
+    // public function render()
+    // {
+    //     return view(
+    //         'livewire.user-register-form'
+    //     );
+    // }
 }
